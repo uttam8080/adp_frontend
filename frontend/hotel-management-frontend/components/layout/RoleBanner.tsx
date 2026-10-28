@@ -143,14 +143,14 @@ const ROLE_BOUNDARIES: Record<RoleProfile, BoundaryConfig> = {
 
 export const RoleBanner = () => {
   const { currentRole, currentUser } = useHotelStore();
-  const boundary = ROLE_BOUNDARIES[currentRole];
+  const boundary = ROLE_BOUNDARIES[currentRole] || ROLE_BOUNDARIES.department_dispatcher;
 
   return (
-    <div className="bg-stone-50 border border-stone-200/80 rounded-xl p-4 shadow-2xs">
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 pb-3 border-b border-stone-200">
-        <div>
-          <div className="flex items-center gap-2">
-            <span className="text-xs uppercase font-bold tracking-wider text-amber-700 bg-amber-100/60 px-2 py-0.5 rounded-sm">
+    <div className="bg-stone-50 border border-stone-200/90 rounded-xl p-4 sm:p-5 shadow-xs">
+      <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3 pb-3.5 border-b border-stone-200">
+        <div className="space-y-1">
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="text-[10px] uppercase font-bold tracking-wider text-amber-800 bg-amber-100/80 px-2 py-0.5 rounded">
               Active Simulation Persona
             </span>
             <span className="text-sm font-serif font-bold text-stone-900">
@@ -160,40 +160,41 @@ export const RoleBanner = () => {
               ({currentUser.scope.department} • {currentUser.scope.shift} Shift)
             </span>
           </div>
-          <p className="text-xs text-stone-600 mt-1 flex items-center gap-1.5">
+          <p className="text-xs text-stone-600 flex items-center gap-1.5 pt-0.5">
             <Info className="w-3.5 h-3.5 text-stone-400 shrink-0" />
-            {boundary.purpose}
+            <span>{boundary.purpose}</span>
           </p>
         </div>
 
-        <div className="text-xs text-stone-500">
-          Reports to: <span className="font-semibold text-stone-800">{boundary.reportingTo}</span>
+        <div className="inline-flex items-center gap-1.5 self-start px-2.5 py-1 rounded-md bg-stone-100 text-stone-600 text-xs border border-stone-200 shrink-0">
+          <span>Reports to:</span>
+          <span className="font-semibold text-stone-900">{boundary.reportingTo}</span>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-3 text-xs">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5 pt-3.5 text-xs">
         {/* Permitted */}
-        <div className="space-y-1.5">
-          <div className="flex items-center gap-1.5 font-semibold text-emerald-800">
-            <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
-            Authorized Permissions
+        <div className="bg-emerald-50/50 border border-emerald-200/60 rounded-lg p-3 space-y-2">
+          <div className="flex items-center gap-1.5 font-semibold text-emerald-900">
+            <ShieldCheck className="w-4 h-4 text-emerald-600 shrink-0" />
+            <span>Authorized Permissions</span>
           </div>
-          <ul className="space-y-1 pl-5 list-disc text-stone-600 marker:text-emerald-500">
+          <ul className="space-y-1.5 pl-5 list-disc text-stone-700 marker:text-emerald-500">
             {boundary.allowed.map((item, idx) => (
-              <li key={idx}>{item}</li>
+              <li key={idx} className="leading-relaxed">{item}</li>
             ))}
           </ul>
         </div>
 
         {/* Boundary Limits */}
-        <div className="space-y-1.5">
-          <div className="flex items-center gap-1.5 font-semibold text-rose-800">
-            <ShieldX className="w-3.5 h-3.5 text-rose-600" />
-            Access Boundaries & Restrictions
+        <div className="bg-rose-50/50 border border-rose-200/60 rounded-lg p-3 space-y-2">
+          <div className="flex items-center gap-1.5 font-semibold text-rose-900">
+            <ShieldX className="w-4 h-4 text-rose-600 shrink-0" />
+            <span>Access Boundaries & Restrictions</span>
           </div>
-          <ul className="space-y-1 pl-5 list-disc text-stone-600 marker:text-rose-500">
+          <ul className="space-y-1.5 pl-5 list-disc text-stone-700 marker:text-rose-500">
             {boundary.restricted.map((item, idx) => (
-              <li key={idx}>{item}</li>
+              <li key={idx} className="leading-relaxed">{item}</li>
             ))}
           </ul>
         </div>

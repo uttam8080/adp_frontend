@@ -1,7 +1,8 @@
-﻿"use client";
-import { useState, type FormEvent } from "react";
+"use client";
+import { useState, useRef, useEffect, type FormEvent } from "react";
 import { Hotel, Leaf, ArrowRight, Eye, EyeOff, ShieldCheck } from "lucide-react";
 import { useAuth } from "@/components/providers/AuthProvider";
+import gsap from "gsap";
 
 type Mode = "login" | "register";
 
@@ -16,6 +17,30 @@ export default function LoginPage() {
   const { login, register, error, isLoading, clearError } = useAuth();
   const [mode, setMode] = useState<Mode>("login");
   const [showPass, setShowPass] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!containerRef.current) return;
+    const ctx = gsap.context(() => {
+      gsap.fromTo(
+        ".login-brand",
+        { opacity: 0, y: -20, scale: 0.95 },
+        { opacity: 1, y: 0, scale: 1, duration: 0.6, ease: "power2.out" }
+      );
+      gsap.fromTo(
+        ".login-card",
+        { opacity: 0, y: 24 },
+        { opacity: 1, y: 0, duration: 0.6, delay: 0.15, ease: "power2.out" }
+      );
+      gsap.fromTo(
+        ".demo-item",
+        { opacity: 0, x: -10 },
+        { opacity: 1, x: 0, duration: 0.35, stagger: 0.08, delay: 0.35, ease: "power1.out" }
+      );
+    }, containerRef);
+
+    return () => ctx.revert();
+  }, []);
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -50,10 +75,10 @@ export default function LoginPage() {
       background: "linear-gradient(135deg, #1a1c14 0%, #2a2d1e 50%, #1a1c14 100%)",
       fontFamily: "'Inter', system-ui, sans-serif",
     }}>
-      <div style={{ width: "100%", maxWidth: 420 }}>
+      <div ref={containerRef} style={{ width: "100%", maxWidth: 420 }}>
 
         {/* Brand */}
-        <div style={{ textAlign: "center", marginBottom: 40 }}>
+        <div className="login-brand" style={{ textAlign: "center", marginBottom: 40 }}>
           <div style={{
             width: 52, height: 52, borderRadius: 14,
             background: "linear-gradient(135deg, #7a8c5c, #a0b070)",
@@ -72,7 +97,7 @@ export default function LoginPage() {
         </div>
 
         {/* Card */}
-        <div style={{
+        <div className="login-card" style={{
           background: "rgba(255,253,246,0.04)",
           border: "1px solid rgba(255,253,246,0.1)",
           borderRadius: 18,
@@ -128,18 +153,21 @@ export default function LoginPage() {
                 style={inputStyle} />
             </div>
 
-            <div style={{ marginBottom: 24, position: "relative" }}>
+            <div style={{ marginBottom: 24 }}>
               <label style={{ display: "block", color: "#a09880", fontSize: 12, marginBottom: 6, fontWeight: 600 }}>
                 PASSWORD
               </label>
-              <input name="password" type={showPass ? "text" : "password"} required
-                placeholder="Password" style={{ ...inputStyle, paddingRight: 44 }} />
-              <button type="button" onClick={() => setShowPass(!showPass)} style={{
-                position: "absolute", right: 12, bottom: 11,
-                background: "none", border: "none", cursor: "pointer", color: "#8a8470",
-              }}>
-                {showPass ? <EyeOff size={16} /> : <Eye size={16} />}
-              </button>
+              <div style={{ position: "relative", display: "flex", alignItems: "center" }}>
+                <input name="password" type={showPass ? "text" : "password"} required
+                  placeholder="Password" style={{ ...inputStyle, paddingRight: 44 }} />
+                <button type="button" onClick={() => setShowPass(!showPass)} aria-label={showPass ? "Hide password" : "Show password"} style={{
+                  position: "absolute", right: 12, top: "50%", transform: "translateY(-50%)",
+                  background: "none", border: "none", cursor: "pointer", color: "#8a8470",
+                  display: "flex", alignItems: "center", justifyContent: "center", padding: 4,
+                }}>
+                  {showPass ? <EyeOff size={16} /> : <Eye size={16} />}
+                </button>
+              </div>
             </div>
 
             <button type="submit" disabled={isLoading} style={{
@@ -150,7 +178,7 @@ export default function LoginPage() {
               transition: "all 0.2s",
             }}>
               {isLoading ? "Please wait…" : mode === "login" ? "Sign in to your account" : "Create account"}
-              {!isLoading && <ArrowRight size={15} />}
+              {!isLoading && <ArrowRight size={16} />}
             </button>
           </form>
 
@@ -166,7 +194,7 @@ export default function LoginPage() {
               </div>
               <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
                 {DEMO_ACCOUNTS.map((a) => (
-                  <button key={a.email} onClick={() => quickLogin(a.email, a.password)}
+                  <button key={a.email} className="demo-item" onClick={() => quickLogin(a.email, a.password)}
                     disabled={isLoading}
                     style={{
                       display: "flex", alignItems: "center", justifyContent: "space-between",
@@ -178,9 +206,12 @@ export default function LoginPage() {
                     onMouseEnter={e => (e.currentTarget.style.background = "rgba(122,140,92,0.12)")}
                     onMouseLeave={e => (e.currentTarget.style.background = "rgba(255,253,246,0.04)")}
                   >
-                    <span style={{ color: "#c8c0a8", fontSize: 13, fontWeight: 500 }}>{a.label}</span>
+                    <div style={{ textAlign: "left" }}>
+                      <div style={{ color: "#c8c0a8", fontSize: 13, fontWeight: 600 }}>{a.label}</div>
+                      <div style={{ color: "#8a8470", fontSize: 11, marginTop: 2 }}>{a.email}</div>
+                    </div>
                     <span style={{
-                      fontSize: 10, fontWeight: 700, letterSpacing: 1, padding: "2px 8px",
+                      fontSize: 10, fontWeight: 700, letterSpacing: 1, padding: "3px 8px",
                       borderRadius: 6,
                       background: a.badge === "admin" ? "rgba(180,140,60,0.25)" :
                         a.badge === "staff" ? "rgba(92,140,122,0.25)" : "rgba(140,92,122,0.25)",

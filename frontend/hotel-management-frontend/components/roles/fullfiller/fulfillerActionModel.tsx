@@ -102,7 +102,7 @@ export const FulfillerActionModal: React.FC<FulfillerActionModalProps> = ({ task
           )}
         </div>
 
-        <DialogFooter className="gap-2 sm:gap-0">
+        <DialogFooter className="gap-2 sm:gap-2">
           <Button variant="outline" size="sm" onClick={onClose} className="text-xs">
             Cancel
           </Button>

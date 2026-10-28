@@ -6,9 +6,8 @@ let globalVersion: number = 1;
 
 export function filterState(s: HotelState, role: Role): HotelState {
   const tasks = visibleTasks(s, role);
-  const roomAccess = ["frontdesk", "executive", "admin"].includes(role);
   const money = ["frontdesk", "executive", "finance", "manager"].includes(role);
-  const rooms = roomAccess ? s.rooms : [];
+  const rooms = s.rooms; // Rooms directory available to all roles
 
   return {
     ...s,
@@ -36,6 +35,9 @@ export function filterState(s: HotelState, role: Role): HotelState {
 }
 
 export function loadLocalState() {
+  if (!globalState.rooms || globalState.rooms.length < 16) {
+    globalState.rooms = seedState().rooms;
+  }
   if (!globalState.services || globalState.services.length === 0) {
     globalState.services = seedState().services;
   }

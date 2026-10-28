@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import "./atelier.css";
+import "lenis/dist/lenis.css";
 import { SmoothScrollProvider } from "@/components/providers/SmoothScrollProvider";
 import { VantaBackground } from "@/components/providers/VantaBackground";
 

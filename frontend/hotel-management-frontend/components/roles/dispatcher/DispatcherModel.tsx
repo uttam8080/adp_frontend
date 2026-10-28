@@ -66,7 +66,7 @@ export const DispatchModal: React.FC<DispatchModalProps> = ({ task, isOpen, onCl
               Select Available Assignee
             </Label>
             <Select value={selectedStaffId} onValueChange={(val) => setSelectedStaffId(val ?? '')}>
-              <SelectTrigger id="staff" className="bg-white border-stone-200 text-xs">
+              <SelectTrigger id="staff" className="w-full bg-white border-stone-200 text-xs">
                 <SelectValue placeholder="Choose eligible team member..." />
               </SelectTrigger>
               <SelectContent className="bg-white border-stone-200 text-xs">
@@ -80,7 +80,7 @@ export const DispatchModal: React.FC<DispatchModalProps> = ({ task, isOpen, onCl
           </div>
         </div>
 
-        <DialogFooter className="gap-2 sm:gap-0">
+        <DialogFooter className="gap-2 sm:gap-2">
           <Button variant="outline" size="sm" onClick={onClose} className="text-xs">
             Cancel
           </Button>

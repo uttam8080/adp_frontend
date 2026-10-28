@@ -1,0 +1,10 @@
+{
+  "name": "adp-frontend-root",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "npm --prefix frontend/hotel-management-frontend run dev",
+    "build": "npm --prefix frontend/hotel-management-frontend run build",
+    "start": "npm --prefix frontend/hotel-management-frontend run start"
+  }
+}

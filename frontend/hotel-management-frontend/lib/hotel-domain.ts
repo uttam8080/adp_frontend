@@ -22,8 +22,29 @@ export function allowed(role:Role,action:string){const map:Record<string,string[
 export function visibleTasks(s:HotelState,role:Role){if(role==="fulfiller")return s.tasks.filter(t=>t.assignee===roleInfo(role).person);if(["dispatcher","supervisor","manager"].includes(role))return s.tasks.filter(t=>t.department===roleInfo(role).department);return ["admin","finance","security"].includes(role)?[]:s.tasks;}
 export function seedState(now=Date.now()):HotelState{
  const ago=(m:number)=>new Date(now-m*60000).toISOString(),date=(d:number)=>new Date(now+d*86400000).toISOString().slice(0,10);
- const names=["Charlotte Evans","Henry Williams","Olivia Carter","Benjamin Lee","Sophia Anderson","","William Taylor","Amelia James","Ethan Brown","","Ava Thompson",""];
- const rooms=names.map((guest,i)=>({id:String(i<6?101+i:201+i-6),type:i%3===0?"Garden suite":i%3===1?"Deluxe king":"Classic twin",guest,email:"",arrival:date(-1),departure:date(2+i%3),status:guest?"Occupied":i===9?"Cleaning":"Available",floor:i<6?1:2,rate:i%3===0?245:185,verified:false}));
+ const names=["Charlotte Evans","Henry Williams","Olivia Carter","Benjamin Lee","Sophia Anderson","Liam Davis","William Taylor","Amelia James","Ethan Brown","Isabella Martinez","Ava Thompson","Lucas Garcia","Alexander Wright","Victoria Sterling","Julian Vance","Seraphina Laurent"];
+ const initialRooms: Room[] = [
+  // Floor 1
+  { id: "101", type: "Garden suite", guest: "Charlotte Evans", email: "charlotte.evans@example.com", arrival: date(-2), departure: date(3), status: "Occupied", floor: 1, rate: 245, verified: true },
+  { id: "102", type: "Deluxe king", guest: "Henry Williams", email: "henry.williams@example.com", arrival: date(-1), departure: date(4), status: "Occupied", floor: 1, rate: 215, verified: true },
+  { id: "103", type: "Classic twin", guest: "Olivia Carter", email: "olivia.carter@example.com", arrival: date(-3), departure: date(2), status: "Occupied", floor: 1, rate: 185, verified: true },
+  { id: "104", type: "Garden suite", guest: "Benjamin Lee", email: "benjamin.lee@example.com", arrival: date(-1), departure: date(5), status: "Occupied", floor: 1, rate: 245, verified: true },
+  { id: "105", type: "Deluxe king", guest: "Sophia Anderson", email: "sophia.anderson@example.com", arrival: date(-2), departure: date(2), status: "Occupied", floor: 1, rate: 215, verified: true },
+  { id: "106", type: "Classic twin", guest: "Liam Davis", email: "liam.davis@example.com", arrival: date(0), departure: date(3), status: "Available", floor: 1, rate: 185, verified: false },
+  // Floor 2
+  { id: "201", type: "Garden suite", guest: "William Taylor", email: "william.taylor@example.com", arrival: date(-1), departure: date(4), status: "Occupied", floor: 2, rate: 255, verified: true },
+  { id: "202", type: "Deluxe king", guest: "Amelia James", email: "amelia.james@example.com", arrival: date(-2), departure: date(3), status: "Occupied", floor: 2, rate: 225, verified: true },
+  { id: "203", type: "Classic twin", guest: "Ethan Brown", email: "ethan.brown@example.com", arrival: date(-1), departure: date(2), status: "Occupied", floor: 2, rate: 195, verified: true },
+  { id: "204", type: "Garden suite", guest: "Isabella Martinez", email: "isabella.martinez@example.com", arrival: date(-3), departure: date(3), status: "Cleaning", floor: 2, rate: 255, verified: false },
+  { id: "205", type: "Deluxe king", guest: "Ava Thompson", email: "ava.thompson@example.com", arrival: date(-1), departure: date(4), status: "Occupied", floor: 2, rate: 225, verified: true },
+  { id: "206", type: "Classic twin", guest: "Lucas Garcia", email: "lucas.garcia@example.com", arrival: date(0), departure: date(2), status: "Available", floor: 2, rate: 195, verified: false },
+  // Floor 3 - Premium Suites
+  { id: "301", type: "Executive suite", guest: "Alexander Wright", email: "alex.wright@example.com", arrival: date(-2), departure: date(5), status: "Occupied", floor: 3, rate: 340, verified: true },
+  { id: "302", type: "Presidential suite", guest: "Victoria Sterling", email: "victoria.sterling@example.com", arrival: date(-1), departure: date(6), status: "Occupied", floor: 3, rate: 480, verified: true },
+  { id: "303", type: "Panorama suite", guest: "Julian Vance", email: "julian.vance@example.com", arrival: date(-2), departure: date(3), status: "Occupied", floor: 3, rate: 360, verified: true },
+  { id: "304", type: "Penthouse suite", guest: "Seraphina Laurent", email: "seraphina.laurent@example.com", arrival: date(-1), departure: date(7), status: "Occupied", floor: 3, rate: 550, verified: true },
+ ];
+ const rooms = initialRooms;
  const rows=[
  ["Extra pillows & fresh towels","101","Housekeeping","Amenities","In progress","Normal","Sofia Rivera",12,18],
  ["Air conditioning not cooling","203","Maintenance","Repair","Open","High","",25,5],

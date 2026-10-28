@@ -39,24 +39,24 @@ const ROLE_LABELS: Record<RoleProfile, { title: string; category: string; color:
 
 export const Header = () => {
   const { currentRole, currentUser, setRole } = useHotelStore();
-  const currentRoleInfo = ROLE_LABELS[currentRole];
+  const currentRoleInfo = ROLE_LABELS[currentRole] || ROLE_LABELS.department_dispatcher;
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-stone-200 bg-[#FAF8F5]/90 backdrop-blur-md px-6 py-3 transition-colors">
+    <header className="sticky top-0 z-50 w-full border-b border-stone-200 bg-[#FAF8F5]/90 backdrop-blur-md px-6 py-2.5 transition-colors">
       <div className="flex items-center justify-between gap-4 max-w-7xl mx-auto">
         {/* Left: Brand & Scope */}
         <div className="flex items-center gap-4">
-          <div className="flex items-center gap-2">
-            <div className="w-9 h-9 rounded-lg bg-stone-900 text-stone-100 flex items-center justify-center font-serif text-lg font-bold shadow-sm">
+          <div className="flex items-center gap-2.5">
+            <div className="w-9 h-9 rounded-lg bg-stone-900 text-stone-100 flex items-center justify-center font-serif text-lg font-bold shadow-sm shrink-0">
               A
             </div>
             <div>
               <div className="flex items-center gap-1.5 font-serif font-semibold text-stone-900 tracking-tight leading-none text-base">
                 L&apos;Atelier Grand Hotel
-                <Sparkles className="w-3.5 h-3.5 text-amber-600 inline" />
+                <Sparkles className="w-3.5 h-3.5 text-amber-600 shrink-0" />
               </div>
-              <div className="text-[11px] text-stone-700 flex items-center gap-1 mt-0.5">
-                <Building2 className="w-3 h-3 text-stone-700" />
+              <div className="text-[11px] text-stone-700 flex items-center gap-1.5 mt-1 leading-none">
+                <Building2 className="w-3 h-3 text-stone-700 shrink-0" />
                 <span>Paris Étoile</span>
                 <span className="text-stone-400">•</span>
                 <span className="font-medium text-stone-700">{currentUser.scope.department}</span>
@@ -66,14 +66,14 @@ export const Header = () => {
 
           {/* Active Scope Pill */}
           <div className="hidden md:flex items-center gap-2 pl-4 border-l border-stone-200">
-            <Badge variant="outline" className="text-xs bg-white text-stone-700 border-stone-200 flex items-center gap-1">
-              <Clock className="w-3 h-3 text-stone-500" />
-              {currentUser.scope.shift} Shift
+            <Badge variant="outline" className="text-xs bg-white text-stone-700 border-stone-200 flex items-center gap-1.5 py-1 px-2.5">
+              <Clock className="w-3 h-3 text-stone-500 shrink-0" />
+              <span>{currentUser.scope.shift} Shift</span>
             </Badge>
             {currentUser.scope.floor && (
-              <Badge variant="outline" className="text-xs bg-white text-stone-700 border-stone-200 flex items-center gap-1">
-                <Layers className="w-3 h-3 text-stone-500" />
-                Floor {currentUser.scope.floor}
+              <Badge variant="outline" className="text-xs bg-white text-stone-700 border-stone-200 flex items-center gap-1.5 py-1 px-2.5">
+                <Layers className="w-3 h-3 text-stone-500 shrink-0" />
+                <span>Floor {currentUser.scope.floor}</span>
               </Badge>
             )}
           </div>
@@ -84,11 +84,11 @@ export const Header = () => {
           {/* Emergency Alert Button */}
           <Button
             variant="destructive"
-            size="sm"
-            className="h-8 gap-1.5 bg-rose-600 hover:bg-rose-700 text-white font-medium text-xs shadow-sm transition-transform active:scale-95"
+            size="default"
+            className="h-9 px-3 gap-2 bg-rose-600 hover:bg-rose-700 text-white font-medium text-xs shadow-sm transition-transform active:scale-95 flex items-center"
             onClick={() => alert('EMERGENCY DISPATCH: Alerting Security & Duty Manager immediately under Property Emergency Plan.')}
           >
-            <ShieldAlert className="w-3.5 h-3.5 animate-pulse" />
+            <ShieldAlert className="w-3.5 h-3.5 animate-pulse shrink-0" />
             <span className="hidden sm:inline">Emergency Alert</span>
           </Button>
 
@@ -97,7 +97,7 @@ export const Header = () => {
             <DropdownMenuTrigger
               className="h-9 px-3 gap-2.5 bg-white border border-stone-200 hover:bg-stone-50 shadow-xs inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors cursor-pointer"
             >
-              <Avatar className="h-6 w-6 border border-stone-200">
+              <Avatar className="h-6 w-6 border border-stone-200 shrink-0">
                 <AvatarImage src={currentUser.avatar} alt={currentUser.name} />
                 <AvatarFallback className="text-[10px] bg-stone-100 text-stone-700">
                   {currentUser.name.charAt(0)}
@@ -107,18 +107,18 @@ export const Header = () => {
                 <div className="text-xs font-semibold text-stone-900 leading-tight">
                   {currentUser.name}
                 </div>
-                <div className="text-[10px] text-stone-500 font-medium">
+                <div className="text-[10px] text-stone-500 font-medium leading-tight">
                   {currentRoleInfo.title.split(' (')[0]}
                 </div>
               </div>
-              <ChevronDown className="w-3.5 h-3.5 text-stone-400" />
+              <ChevronDown className="w-3.5 h-3.5 text-stone-400 shrink-0" />
             </DropdownMenuTrigger>
 
-            <DropdownMenuContent align="end" className="w-72 bg-white border-stone-200 shadow-lg p-1.5">
-              <DropdownMenuLabel className="text-xs font-semibold text-stone-500 uppercase tracking-wider px-2 py-1">
+            <DropdownMenuContent align="end" className="w-84 sm:w-92 min-w-[320px] bg-white border-stone-200 shadow-xl p-2 rounded-xl">
+              <DropdownMenuLabel className="text-[11px] font-bold text-stone-500 uppercase tracking-wider px-2.5 py-1.5">
                 Simulate Role Profile (9 Personas)
               </DropdownMenuLabel>
-              <DropdownMenuSeparator className="bg-stone-100" />
+              <DropdownMenuSeparator className="bg-stone-100 my-1" />
 
               {(Object.keys(PERSONAS) as RoleProfile[]).map((roleKey) => {
                 const user = PERSONAS[roleKey];
@@ -129,22 +129,22 @@ export const Header = () => {
                   <DropdownMenuItem
                     key={roleKey}
                     onClick={() => setRole(roleKey)}
-                    className={`flex items-start gap-2.5 p-2 rounded-md cursor-pointer transition-colors ${
-                      isActive ? 'bg-amber-50/80 font-medium' : 'hover:bg-stone-50'
+                    className={`flex items-center gap-3 p-2.5 rounded-lg cursor-pointer transition-colors ${
+                      isActive ? 'bg-amber-50/90 font-medium text-amber-950' : 'hover:bg-stone-50'
                     }`}
                   >
-                    <Avatar className="h-7 w-7 mt-0.5 border border-stone-200 shrink-0">
+                    <Avatar className="h-8 w-8 border border-stone-200 shrink-0">
                       <AvatarImage src={user.avatar} alt={user.name} />
-                      <AvatarFallback className="text-xs">{user.name.charAt(0)}</AvatarFallback>
+                      <AvatarFallback className="text-xs font-semibold">{user.name.charAt(0)}</AvatarFallback>
                     </Avatar>
                     <div className="flex-1 min-w-0">
-                      <div className="flex items-center justify-between gap-1">
-                        <span className="text-xs font-medium text-stone-900 truncate">
+                      <div className="flex items-center justify-between gap-2">
+                        <span className="text-xs font-semibold text-stone-900 truncate">
                           {user.name}
                         </span>
-                        {isActive && <UserCheck className="w-3.5 h-3.5 text-amber-600 shrink-0" />}
+                        {isActive && <UserCheck className="w-4 h-4 text-amber-600 shrink-0" />}
                       </div>
-                      <div className="text-[11px] text-stone-500 truncate">
+                      <div className="text-[11px] text-stone-500 truncate mt-0.5">
                         {info.title}
                       </div>
                     </div>
